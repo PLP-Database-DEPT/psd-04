@@ -37,13 +37,13 @@ jobs:
       - name: Load Sample Data
         run: |
           # Check if demo.sql exists before execution
-          if [ ! -f ./demo.sql ]; then
+          if [ ! -f ./.github/workflows/demo.sql ]; then
             echo "Missing demo.sql file. Ensure database schema and sample data exist."
             exit 1
           fi
 
           echo "Executing demo.sql to set up database..."
-          sudo mysql -u$DB_USER -p$DB_PASSWORD $DB_DATABASE < ./demo.sql
+          sudo mysql -u$DB_USER -p$DB_PASSWORD $DB_DATABASE < ./.github/workflows/demo.sql
 
       - name: Validate SQL Answers
         run: |
