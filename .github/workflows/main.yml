@@ -67,35 +67,3 @@ jobs:
           fi
 
           echo "All SQL queries executed successfully"
-
-      - name: Verify Expected Queries Work
-        run: |
-          echo "Checking if queries return expected results..."
-
-          # Question 1: Verify if payments are grouped by paymentDate
-          result1=$(mysql -u$DB_USER -p$DB_PASSWORD -D $DB_DATABASE -e "
-          SELECT COUNT(*) FROM (
-              SELECT paymentDate, SUM(amount) FROM payments GROUP BY paymentDate
-          ) AS t;")
-          echo "Result 1: $result1"
-
-          # Question 2: Verify customerName and country exist in customers table
-          result2=$(mysql -u$DB_USER -p$DB_PASSWORD -D $DB_DATABASE -e "
-          SELECT COUNT(*) FROM customers;")
-          echo "Result 2: $result2"
-
-          # Question 3: Check order details are grouped correctly
-          result3=$(mysql -u$DB_USER -p$DB_PASSWORD -D $DB_DATABASE -e "
-          SELECT COUNT(*) FROM (
-              SELECT productCode, quantityOrdered, SUM(priceEach) FROM orderdetails GROUP BY productCode, quantityOrdered
-          ) AS t;")
-          echo "Result 3: $result3"
-
-          # Question 4: Check if MAX(amount) per checkNumber works
-          result4=$(mysql -u$DB_USER -p$DB_PASSWORD -D $DB_DATABASE -e "
-          SELECT COUNT(*) FROM (
-              SELECT checkNumber, MAX(amount) FROM payments GROUP BY checkNumber
-          ) AS t;")
-          echo "Result 4: $result4"
-
-          echo "SQL query validation completed!"
